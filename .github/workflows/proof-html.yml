@@ -1,0 +1,33 @@
+name: Proof HTML
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**.html'
+      - '**.css'
+      - '**.js'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  proof-html:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Validate HTML
+        uses: anishathalye/proof-html@v1.1.0
+        with:
+          directory: ./
+          # Ignora enlaces externos que pueden fallar por timeout
+          check_external_hash: false
+          # Permite que enlaces a redes sociales aún vacíos no rompan el workflow
+          ignore_urls: |
+            https://twitter.com
+            https://linkedin.com
+            https://instagram.com
